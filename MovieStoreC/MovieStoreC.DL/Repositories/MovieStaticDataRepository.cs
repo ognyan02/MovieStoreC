@@ -4,21 +4,21 @@ using MovieStoreC.Models.DTO;
 
 namespace MovieStoreC.DL.Repositories
 {
-    internal class MovieStaticDataRepository : IMovieRepository
+    public class MovieStaticDataRepository : IMovieRepository
     {
         public List<Movie> GetAll()
         {
-            return StaticDb.Movies;
+            return StaticDb.Movie;
         }
 
         public Movie? GetById(int id)
         {
             if (id <= 0) return null;
 
-            return StaticDb.Movies
+            return StaticDb.Movie
                 .FirstOrDefault(x => x.Id == id);
         }
-    }
 
+    }
    
 }

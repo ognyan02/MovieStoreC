@@ -12,7 +12,7 @@ namespace MovieStoreC.DL.Repositories.MongoDb
     {
         private readonly IMongoCollection<Movie> _moviesCollection;
         private readonly ILogger<MoviesMongoRepository> _logger;
-
+       
         public MoviesMongoRepository(
             IOptionsMonitor<MongoDbConfiguration> mongoConfig,
             ILogger<MoviesMongoRepository> logger)
@@ -25,7 +25,22 @@ namespace MovieStoreC.DL.Repositories.MongoDb
                 mongoConfig.CurrentValue.DatabaseName);
             _moviesCollection = database.GetCollection<Movie>("MoviesDb");
         }
-
+        public void Add(Movie? movie)
+        {
+            if (movie == null)
+            {
+                _logger.LogError("Movie is null");
+                return;
+            }
+            try
+            {
+                _moviesCollection.InsertOne(movie);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Failed to add movie");
+            }
+        }
         public List<Movie> GetAll()
         {
             return _moviesCollection.Find(m => true)
